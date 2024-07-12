@@ -12,13 +12,6 @@ use Illuminate\Routing\Controller;
 
 class JoditController extends Controller
 {
-    public function __construct()
-    {
-        if (config('jodit.need_auth')) {
-            $this->middleware(config('jodit.middlewares'));
-        }
-    }
-
     /**
      * @throws NotFoundActionException
      */

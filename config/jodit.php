@@ -34,16 +34,16 @@ return [
     ],
 
     'thumb' => [
-        'dir_url' => env('JODIT_THUMB_DIR_URL', env('APP_URL') . '/assets/images/jodit/'),
-
-        'mask' => env('JODIT_THUMB_MASK', 'thumb-%s.svg'),
-
+        'dir_url'           => env('JODIT_THUMB_DIR_URL', env('APP_URL') . '/image/resize/storage/'),
+        'mask'              => env('JODIT_THUMB_MASK', 'thumb-%s.svg'),
         'unknown_extension' => env('JODIT_THUMB_UNKNOWN_EXTENSION', 'thumb-unknown.svg'),
 
         /*
          * In case the icons are located on another server
          */
         'exists'            => explode(',', env('JODIT_THUMB_EXTENSION_EXISTS', '')),
+        'width'             => 150,
+        'height'            => 150,
     ],
 
     'auth_token_parameter'   => env('JODIT_FILE_BROWSER_AUTH_TOKEN_PARAMETER', 'access_token'),
@@ -59,26 +59,21 @@ return [
     'jodit_broken_extension' => explode(',', env('JODIT_BROKEN_EXTENSION', 'vnd,plain,msword')),
 
     'cache' => [
-        'key' => env('JODIT_FILE_BROWSER_CACHE_KEY', 'filebrowser'),
-
+        'key'      => env('JODIT_FILE_BROWSER_CACHE_KEY', 'filebrowser'),
         'duration' => env('JODIT_FILE_BROWSER_CACHE_DURATION', 3600),
     ],
 
     'middlewares' => [
         'auth:api',
+        'check-scopes:backend',
     ],
 
     'routes' => [
-        'middleware' => env('JODIT_FILE_BROWSER_MIDDLEWARE', 'api'),
-
-        'prefix' => env('JODIT_FILE_BROWSER_PATH_PREFIX'),
-
+        'prefix'      => env('JODIT_FILE_BROWSER_PATH_PREFIX', 'backend/v1'),
         'upload_path' => env('JODIT_FILE_BROWSER_UPLOAD_PATH', 'jodit/upload'),
         'browse_path' => env('JODIT_FILE_BROWSER_BROWSE_PATH', 'jodit/browse'),
-
         'upload_name' => env('JODIT_FILE_BROWSER_UPLOAD_ROUTE_NAME', 'jodit.upload'),
         'browse_name' => env('JODIT_FILE_BROWSER_BROWSE_ROUTE_NAME', 'jodit.browse'),
-
     ],
 
     'upload_actions' => [

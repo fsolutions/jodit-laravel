@@ -47,20 +47,20 @@ class Files extends AbstractFileBrowserAction
 
     protected function getAttributesByPath(string $filePath): array
     {
-        return Cache::remember(
-            config('jodit.cache.key') . $filePath,
-            config('jodit.cache.duration'),
-            function () use ($filePath): array {
-                return [
-                    'fileName' => $this->getNameByFilePath($filePath),
-                    'thumb' => !$this->isImage($filePath)
-                        ? $this->getThumbByFilePath($filePath)
-                        : null,
-                    'changed' => $this->getChangedTimeByFilePath($filePath),
-                    'size' => $this->getSizeByFilePath($filePath),
-                ];
-            }
-        );
+        return [
+            'fileName' => $this->getNameByFilePath($filePath),
+            'thumb'    => $this->isImage($filePath)
+                ? $this->getThumbByFilePath($filePath)
+                : null,
+            'changed'  => $this->getChangedTimeByFilePath($filePath),
+            'size'     => $this->getSizeByFilePath($filePath),
+            'type'     => $this->getType($filePath),
+        ];
+    }
+
+    protected function getType(string $filePath): string
+    {
+        return $this->isImage($filePath) ? 'image' : 'file';
     }
 
     protected function getNameByFilePath(string $filePath): string
@@ -77,15 +77,9 @@ class Files extends AbstractFileBrowserAction
 
     protected function getThumbByFilePath(string $path): string
     {
-        $extension = $this->fileBrowser->getExtension($path);
+        $url = config('jodit.thumb.dir_url') . config('jodit.root') . '/';
 
-        $url = config('jodit.thumb.dir_url');
-
-        if (in_array($extension, config('jodit.thumb.exists'))) {
-            return $url . sprintf(config('jodit.thumb.mask'), $extension);
-        }
-
-        return $url . config('jodit.thumb.unknown_extension');
+        return $url . $path . '?w=' . config('jodit.thumb.width') . '&h=' . config('jodit.thumb.height');
     }
 
     protected function getChangedTimeByFilePath(string $filePath): Carbon
