@@ -2,7 +2,7 @@
     "name": "attract/laravel-jodit",
     "description": "An easy way to use the Jodit editor with your Laravel Api service.",
     "type": "library",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "require": {
         "php": "^7.4|^8",
         "ext-json": "*",
