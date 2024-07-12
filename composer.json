@@ -1,0 +1,50 @@
+{
+    "name": "attract/laravel-jodit",
+    "description": "An easy way to use the Jodit editor with your Laravel Api service.",
+    "type": "library",
+    "version": "1.0.4",
+    "require": {
+        "php": "^7.4|^8",
+        "ext-json": "*",
+        "ext-dom": "*",
+        "ext-gd": "*",
+        "illuminate/http": "^7|^8",
+        "illuminate/cache": "^7|^8",
+        "illuminate/filesystem": "^7|^8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8|^9",
+        "orchestra/testbench": "^4|^5",
+        "mockery/mockery": "^1.0",
+        "laravel/framework": "^7|^8",
+        "fakerphp/faker": "^1.9.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Boiko Sergii",
+            "email": "helvisbox@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Do6po\\LaravelJodit\\": "src/"
+        },
+        "files": [
+            "src/Helpers/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Do6po\\LaravelJodit\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Do6po\\LaravelJodit\\Providers\\JoditServiceProvider"
+            ]
+        }
+    }
+}
