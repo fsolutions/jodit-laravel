@@ -15,23 +15,23 @@ class PermissionsResource extends JsonResource
     {
         return [
             'success' => true,
-            'time' => now(),
-            'code' => 220,
-            'data' => [
+            'time'    => now(),
+            'code'    => 220,
+            'data'    => [
                 'permissions' => [
-                    'allowFiles' => true,
-                    'allowFileMove' => true,
-                    'allowFileUpload' => true,
+                    'allowFiles'            => true,
+                    'allowFileMove'         => true,
+                    'allowFileUpload'       => true,
                     'allowFileUploadRemote' => true,
-                    'allowFileRemove' => true,
-                    'allowFileRename' => true,
-                    'allowFolders' => true,
-                    'allowFolderMove' => true,
-                    'allowFolderCreate' => true,
-                    'allowFolderRemove' => true,
-                    'allowFolderRename' => true,
-                    'allowImageResize' => true,
-                    'allowImageCrop' => false
+                    'allowFileRemove'       => true,
+                    'allowFileRename'       => true,
+                    'allowFolders'          => true,
+                    'allowFolderMove'       => true,
+                    'allowFolderCreate'     => true,
+                    'allowFolderRemove'     => true,
+                    'allowFolderRename'     => true,
+                    'allowImageResize'      => false,
+                    'allowImageCrop'        => false
                 ],
             ],
         ];

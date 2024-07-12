@@ -17,6 +17,8 @@ class FileDto implements Arrayable
 
     private ?string $size;
 
+    private ?string $type;
+
     public static function byAttributes(array $attributes): self
     {
         $self = new self();
@@ -25,6 +27,7 @@ class FileDto implements Arrayable
         $self->thumb = Arr::get($attributes, 'thumb');
         $self->changed = Arr::get($attributes, 'changed');
         $self->size = Arr::get($attributes, 'size');
+        $self->type = Arr::get($attributes, 'type');
 
         return $self;
     }
@@ -33,13 +36,12 @@ class FileDto implements Arrayable
     {
         return [
             'file'            => $this->getFileName(),
-            'thumb'           => config('app.url') . '/image/resize/storage/filebrowser/' . $this->getFileName(
-                ) . '?w=150&h=150',
+            'thumb'           => $this->getThumb(),
             'changed'         => $this->getChanged()->format('d/m/Y H:m A'),
             'size'            => $this->getSizeInKb(),
             'thumbIsAbsolute' => true,
             'name'            => $this->getFileName(),
-            'type'            => 'image'
+            'type'            => $this->getType()
         ];
     }
 
@@ -75,5 +77,10 @@ class FileDto implements Arrayable
     public function getSize(): string
     {
         return $this->size;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 }
