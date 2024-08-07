@@ -1,6 +1,6 @@
 {
-    "name": "attract/laravel-jodit",
-    "description": "An easy way to use the Jodit editor with your Laravel Api service.",
+    "name": "fs-solutions/jodit-laravel",
+    "description": "An easy way to use the Jodit editor with your Laravel API service.",
     "type": "library",
     "version": "1.0.5",
     "require": {
@@ -22,8 +22,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Boiko Sergii",
-            "email": "helvisbox@gmail.com"
+            "name": "Your Name",
+            "email": "your-email@example.com"
         }
     ],
     "minimum-stability": "stable",
