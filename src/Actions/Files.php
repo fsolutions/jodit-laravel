@@ -2,10 +2,10 @@
 
 namespace Do6po\LaravelJodit\Actions;
 
-use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 use Do6po\LaravelJodit\Dto\FileDto;
 use Do6po\LaravelJodit\Dto\FolderDto;
+use Illuminate\Support\Facades\Storage;
 use Do6po\LaravelJodit\Http\Resources\DirectoryResource;
 
 class Files extends AbstractFileBrowserAction
@@ -20,40 +20,36 @@ class Files extends AbstractFileBrowserAction
     public function handle(): FileBrowserAction
     {
         $path = $this->getPath();
-
         $this->mapFiles($path);
-
         return $this;
     }
 
     protected function mapFiles(string $path)
     {
+        $rootPath = config('jodit.root_public') . '/'. $path;
         $files = [];
 
-        foreach ($this->fileBrowser->files($path) as $filePath) {
-            $files[] = FileDto::byAttributes(
-                $this->getAttributesByPath($filePath)
-            );
+        foreach (Storage::disk('public')->files($rootPath) as $filePath) {
+            $attributes = $this->getAttributesByPath($filePath);
+            $files[] = FileDto::byAttributes($attributes);
         }
 
         $this->folder = FolderDto::byParams(
-            $this->fileBrowser->getNameByPath($path),
-            $this->fileBrowser->getUrl('/'),
+            basename($path),
+            Storage::url($path),
             [],
             $files,
-            $path
+            $rootPath
         );
     }
 
     protected function getAttributesByPath(string $filePath): array
     {
         return [
-            'fileName' => $this->getNameByFilePath($filePath),
-            'thumb'    => $this->isImage($filePath)
-                ? $this->getThumbByFilePath($filePath)
-                : null,
+            'name' => basename($filePath),
+            'thumb'    => $this->isImage($filePath) ? Storage::url($filePath) : '',
             'changed'  => $this->getChangedTimeByFilePath($filePath),
-            'size'     => $this->getSizeByFilePath($filePath),
+            'size'     => Storage::disk('public')->size($filePath),
             'type'     => $this->getType($filePath),
         ];
     }
@@ -63,35 +59,15 @@ class Files extends AbstractFileBrowserAction
         return $this->isImage($filePath) ? 'image' : 'file';
     }
 
-    protected function getNameByFilePath(string $filePath): string
-    {
-        return $this->fileBrowser->getNameByPath($filePath);
-    }
-
     private function isImage($filePath): bool
     {
-        return isImage(
-            $this->fileBrowser->getExtension($filePath)
-        );
-    }
-
-    protected function getThumbByFilePath(string $path): string
-    {
-        $url = config('jodit.thumb.dir_url') . config('jodit.root') . '/';
-
-        return $url . $path . '?w=' . config('jodit.thumb.width') . '&h=' . config('jodit.thumb.height');
+        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+        return in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']);
     }
 
     protected function getChangedTimeByFilePath(string $filePath): Carbon
     {
-        return Carbon::createFromTimestamp(
-            $this->fileBrowser->lastModified($filePath)
-        );
-    }
-
-    protected function getSizeByFilePath(string $filePath): int
-    {
-        return $this->fileBrowser->size($filePath);
+        return Carbon::createFromTimestamp(Storage::disk('public')->lastModified($filePath));
     }
 
     public function response(): DirectoryResource

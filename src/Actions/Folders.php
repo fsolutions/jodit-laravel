@@ -27,6 +27,7 @@ class Folders extends AbstractFileBrowserAction
     private function mapFolders(string $path): void
     {
         $folders = empty($path) ? ['.'] : ['..'];
+        $files = [];
 
         foreach ($this->fileBrowser->directories($path) as $directory) {
             $folders[] = $this->fileBrowser->getNameByPath($directory);
@@ -35,7 +36,7 @@ class Folders extends AbstractFileBrowserAction
         $name = $this->fileBrowser->getNameByPath($path);
         $baseUrl = $this->fileBrowser->getUrl($path);
 
-        $this->folder = FolderDto::byParams($name, $baseUrl, $folders, [], $path);
+        $this->folder = FolderDto::byParams($name, $baseUrl, $folders, $files, $path);
     }
 
     public function response(): DirectoryResource

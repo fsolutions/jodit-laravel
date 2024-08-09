@@ -2,13 +2,13 @@
 
 namespace Do6po\LaravelJodit\Http\Controllers;
 
-use Do6po\LaravelJodit\Factories\FileManipulationFactory;
-use Do6po\LaravelJodit\Factories\FileUploadFactory;
-use Do6po\LaravelJodit\Factories\NotFoundActionException;
-use Do6po\LaravelJodit\Http\Requests\FileBrowserRequest;
-use Do6po\LaravelJodit\Http\Requests\FileUploadRequest;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Routing\Controller;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Do6po\LaravelJodit\Factories\FileUploadFactory;
+use Do6po\LaravelJodit\Http\Requests\FileUploadRequest;
+use Do6po\LaravelJodit\Http\Requests\FileBrowserRequest;
+use Do6po\LaravelJodit\Factories\FileManipulationFactory;
+use Do6po\LaravelJodit\Factories\NotFoundActionException;
 
 class JoditController extends Controller
 {

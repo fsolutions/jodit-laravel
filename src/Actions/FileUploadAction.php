@@ -4,15 +4,11 @@ namespace Do6po\LaravelJodit\Actions;
 
 use Do6po\LaravelJodit\Dto\UploadedFileDto;
 use Do6po\LaravelJodit\Dto\UploadedFilesInfoDto;
-use Do6po\LaravelJodit\Http\Resources\FileUploadResource;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Do6po\LaravelJodit\Http\Resources\FileUploadResource;
 
-/**
- * @group FileBrowser
- */
 class FileUploadAction extends AbstractFileUploadAction
 {
-
     private UploadedFilesInfoDto $uploadFilesInfo;
 
     public static function getActionName(): string
@@ -23,30 +19,23 @@ class FileUploadAction extends AbstractFileUploadAction
     public function handle(): FileBrowserAction
     {
         $this->checkFilesExists();
-
         if ($this->hasErrors()) {
             return $this;
         }
 
         $this->storeFiles();
-
         return $this;
     }
 
     private function checkFilesExists(): void
     {
         $path = $this->getPath();
-
         foreach ($this->getFiles() as $file) {
             $newFilePath = $this->generateNewFilePath($path, $file->getClientOriginalName());
-
             $this->checkPathExists($newFilePath);
         }
     }
 
-    /**
-     * @return UploadedFile[]
-     */
     private function getFiles(): array
     {
         return $this->dto->getFiles();
@@ -54,9 +43,7 @@ class FileUploadAction extends AbstractFileUploadAction
 
     protected function generateNewFilePath(string $path, string $fileName): string
     {
-        return $path
-            . DIRECTORY_SEPARATOR
-            . $this->replaceSpecialCharacters($fileName);
+        return $path . DIRECTORY_SEPARATOR . $this->replaceSpecialCharacters($fileName);
     }
 
     public function storeFiles(): void
@@ -66,11 +53,7 @@ class FileUploadAction extends AbstractFileUploadAction
 
         foreach ($this->getFiles() as $file) {
             $newFilePath = $this->generateNewFilePath($path, $file->getClientOriginalName());
-
-            $this->fileBrowser->put(
-                $newFilePath,
-                file_get_contents($file->getRealPath())
-            );
+            $this->fileBrowser->put($newFilePath, file_get_contents($file->getRealPath()));
 
             $uploadedFile = UploadedFileDto::byFilePath($newFilePath);
             $uploadedFiles[$uploadedFile->getName()] = $uploadedFile;
